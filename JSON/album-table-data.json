@@ -1,0 +1,12 @@
+[
+    {
+        "album_id": 1,
+        "name": "Help!",
+        "format_type": "Vinyl",
+        "release_date": "1965-08-06",
+        "genre": "Rock",
+        "artist_name": "The Beatles",
+        "description": "Help! is the fifth studio album by The Beatles",
+        "user_id": 1
+    }
+]

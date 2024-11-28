@@ -1,0 +1,10 @@
+[
+    {
+        "user_id": 1,
+        "username": "musiclover",
+        "first_name": "John",
+        "last_name": "Doe",
+        "password": "Grooveuser1$",
+        "address": "123 Music Town"
+    }
+]
