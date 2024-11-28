@@ -2,7 +2,7 @@
 
 -- Create users table
 CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT IDENTITY(1,1) PRIMARY KEY,
     username VARCHAR(20) NOT NULL UNIQUE,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
@@ -12,20 +12,20 @@ CREATE TABLE users (
 
 -- Create albums table
 CREATE TABLE albums (
-    album_id INT AUTO_INCREMENT PRIMARY KEY,
+    album_id INT IDENTITY(1,1) PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     format_type VARCHAR(20) NOT NULL,
     release_date DATE NOT NULL,
     genre VARCHAR(20) NOT NULL,
     artist_name VARCHAR(255) NOT NULL,
-    description TEXT,
+    description VARCHAR(MAX),
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- Create tracks table
 CREATE TABLE tracks (
-    track_id INT AUTO_INCREMENT PRIMARY KEY,
+    track_id INT IDENTITY(1,1) PRIMARY KEY,
     track_title VARCHAR(150) NOT NULL,
     duration TIME NOT NULL
 );
