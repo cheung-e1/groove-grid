@@ -51,6 +51,12 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+# ***** INDEX ROUTE *****
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 # ***** USER ROUTES *****
 
 # User-CNU
