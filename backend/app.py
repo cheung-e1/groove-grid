@@ -174,7 +174,7 @@ def create_new_album():
             "genre": genre,
             "artist_name": artist_name,
             "description": description,
-            "user_id": user_id
+            "user_id": int(user_id)
         }
 
         response = requests.post(ENDPOINTS['album-CNA'], json=album_data)
@@ -228,7 +228,7 @@ def update_individual_album(album_id):
             "genre": genre,
             "artist_name": artist_name,
             "description": description,
-            "user_id": user_id
+            "user_id": int(user_id)
         }
 
         url = ENDPOINTS['album-UIA'].replace("{id}", str(album_id))
@@ -271,17 +271,13 @@ def upload_album_image(album_id):
         file_name = request.form.get('fileName')    # Extract fileName from the form
         file = request.files['file']                # Extract the file itself
 
-        # Validate required fields
-        if not user_id or not username or not file_name or not file:
-            return jsonify({"error": "You are missing required fields"}), 400
-        
         # Validate file type
         if not allowed_file(file.filename):
             return jsonify({"error": "Invalid file type"}), 400
 
         # Prepare the files and form data for the Logic App
         form_data = {
-            'user_id': user_id,
+            'user_id': int(user_id),
             'username': username,
             'fileName': file_name
         }
@@ -387,16 +383,13 @@ def upload_track_audio(album_id, track_id):
         username = request.form.get('username')     # Extract username from the form
         file_name = request.form.get('fileName')    # Extract fileName from the form
         file = request.files['file']                # Extract the file itself
-
-        if not user_id or not username or not file_name or not file:
-            return jsonify({"error": "You are missing required fields"}), 400
         
         # Validate file type
         if not allowed_file(file.filename):
             return jsonify({"error": "Invalid file type"}), 400
 
         form_data = {
-            'user_id': user_id,
+            'user_id': int(user_id),
             'username': username,
             'fileName': file_name
         }
