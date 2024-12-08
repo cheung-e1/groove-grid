@@ -38,14 +38,17 @@ ENDPOINTS = {
 
 
 # Set allowed file types for image and audio
-ALLOWED_MIME_TYPES = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'audio/mpeg',
-    'audio/mp3',
-    'audio/m4a'
-]
+ALLOWED_EXTENSIONS = {
+    'jpeg',
+    'jpg',
+    'png',
+    'mpeg',
+    'mp3',
+    'm4a'
+}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 # ***** USER ROUTES *****
@@ -86,15 +89,25 @@ def create_new_user():
 # User-RAU
 @app.route('/api/users', methods=['GET'])
 def retrieve_all_users():
-    response = requests.get(ENDPOINTS['user-RAU'])
-    return jsonify(response.json()), response.status_code
+    try:
+        response = requests.get(ENDPOINTS['user-RAU'])
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # User-RIU
 @app.route('/api/users/<int:user_id>', methods=['GET'])
 def retrieve_individual_user(user_id):
-    url = ENDPOINTS['user-RIU'].replace("{id}", str(user_id))
-    response = requests.get(url)
-    return jsonify(response.json()), response.status_code
+    try:
+        url = ENDPOINTS['user-RIU'].replace("{id}", str(user_id))
+        response = requests.get(url)
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # User-UIU
 @app.route('/api/users/<int:user_id>', methods=['PUT'])
@@ -127,9 +140,14 @@ def update_individual_user(user_id):
 # User-DIU
 @app.route('/api/users/<int:user_id>', methods=['DELETE'])
 def delete_individual_user(user_id):
-    url = ENDPOINTS['user-DIU'].replace("{id}", str(user_id))
-    response = requests.delete(url)
-    return jsonify(response.json()), response.status_code
+    try:
+        url = ENDPOINTS['user-DIU'].replace("{id}", str(user_id))
+        response = requests.delete(url)
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 
 # ***** ALBUM ROUTES *****
@@ -168,15 +186,25 @@ def create_new_album():
 # Album-RAA
 @app.route('/api/albums', methods=['GET'])
 def retrieve_all_albums():
-    response = requests.get(ENDPOINTS['album-RAA'])
-    return jsonify(response.json()), response.status_code
+    try:
+        response = requests.get(ENDPOINTS['album-RAA'])
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # Album-RIA
 @app.route('/api/albums/<int:album_id>', methods=['GET'])
 def retrieve_individual_album(album_id):
-    url = ENDPOINTS['album-RIA'].replace("{id}", str(album_id))
-    response = requests.get(url)
-    return jsonify(response.json()), response.status_code
+    try:
+        url = ENDPOINTS['album-RIA'].replace("{id}", str(album_id))
+        response = requests.get(url)
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # Album-UIA
 @app.route('/api/albums/<int:album_id>', methods=['PUT'])
@@ -213,9 +241,14 @@ def update_individual_album(album_id):
 # Album-DIA
 @app.route('/api/albums/<int:album_id>', methods=['DELETE'])
 def delete_individual_album(album_id):
-    url = ENDPOINTS['album-DIA'].replace("{id}", str(album_id))
-    response = requests.delete(url)
-    return jsonify(response.json()), response.status_code
+    try:
+        url = ENDPOINTS['album-DIA'].replace("{id}", str(album_id))
+        response = requests.delete(url)
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # Album-RAUA
 @app.route('/api/users/<int:user_id>/albums', methods=['GET'])
@@ -238,9 +271,12 @@ def upload_album_image(album_id):
         file_name = request.form.get('fileName')    # Extract fileName from the form
         file = request.files['file']                # Extract the file itself
 
+        # Validate required fields
         if not user_id or not username or not file_name or not file:
             return jsonify({"error": "You are missing required fields"}), 400
-        if file.mimetype not in ALLOWED_MIME_TYPES:
+        
+        # Validate file type
+        if not allowed_file(file.filename):
             return jsonify({"error": "Invalid file type"}), 400
 
         # Prepare the files and form data for the Logic App
@@ -288,16 +324,26 @@ def create_new_track(album_id):
 # Track-RAT
 @app.route('/api/albums/<int:album_id>/tracks', methods=['GET'])
 def retrieve_all_tracks(album_id):
-    url = ENDPOINTS['track-RAT'].replace("{album_id}", str(album_id))
-    response = requests.get(url)
-    return jsonify(response.json()), response.status_code
+    try:
+        url = ENDPOINTS['track-RAT'].replace("{album_id}", str(album_id))
+        response = requests.get(url)
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # Track-RIT
 @app.route('/api/albums/<int:album_id>/tracks/<int:track_id>', methods=['GET'])
 def retrieve_individual_track(album_id, track_id):
-    url = ENDPOINTS['track-RIT'].replace("{album_id}", str(album_id)).replace("{track_id}", str(track_id))
-    response = requests.get(url)
-    return jsonify(response.json()), response.status_code
+    try:
+        url = ENDPOINTS['track-RIT'].replace("{album_id}", str(album_id)).replace("{track_id}", str(track_id))
+        response = requests.get(url)
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # Track-UIT
 @app.route('/api/albums/<int:album_id>/tracks/<int:track_id>', methods=['PUT'])
@@ -324,9 +370,14 @@ def update_individual_track(album_id, track_id):
 # Track-DIT
 @app.route('/api/albums/<int:album_id>/tracks/<int:track_id>', methods=['DELETE'])
 def delete_individual_track(album_id, track_id):
-    url = ENDPOINTS['track-DIT'].replace("{album_id}", str(album_id)).replace("{track_id}", str(track_id))
-    response = requests.delete(url)
-    return jsonify(response.json()), response.status_code
+    try:
+        url = ENDPOINTS['track-DIT'].replace("{album_id}", str(album_id)).replace("{track_id}", str(track_id))
+        response = requests.delete(url)
+        return jsonify(response.json()), response.status_code
+    
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 # Track-upload-audio
 @app.route('/api/albums/<int:album_id>/tracks/<int:track_id>/audio', methods=['POST'])
@@ -339,7 +390,9 @@ def upload_track_audio(album_id, track_id):
 
         if not user_id or not username or not file_name or not file:
             return jsonify({"error": "You are missing required fields"}), 400
-        if file.mimetype not in ALLOWED_MIME_TYPES:
+        
+        # Validate file type
+        if not allowed_file(file.filename):
             return jsonify({"error": "Invalid file type"}), 400
 
         form_data = {
