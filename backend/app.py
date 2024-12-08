@@ -132,7 +132,12 @@ def update_individual_user(user_id):
 
         url = ENDPOINTS['user-UIU'].replace("{id}", str(user_id))
         response = requests.put(url, json=user_data)
-        return jsonify(response.json()), response.status_code
+
+        # Handle possible empty responses
+        try:
+            return jsonify(response.json()), response.status_code
+        except:
+            return jsonify({"message": "User updated successfully"}), response.status_code
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -143,8 +148,13 @@ def delete_individual_user(user_id):
     try:
         url = ENDPOINTS['user-DIU'].replace("{id}", str(user_id))
         response = requests.delete(url)
-        return jsonify(response.json()), response.status_code
-    
+        
+        # Handle possible empty responses
+        try:
+            return jsonify(response.json()), response.status_code
+        except:
+            return jsonify({"message": "User deleted successfully"}), response.status_code
+        
     except Exception as e:
         # Handle exceptions
         return jsonify({"error": str(e)}), 500
@@ -233,7 +243,12 @@ def update_individual_album(album_id):
 
         url = ENDPOINTS['album-UIA'].replace("{id}", str(album_id))
         response = requests.put(url, json=album_data)
-        return jsonify(response.json()), response.status_code
+        
+        # Handle possible empty responses
+        try:
+            return jsonify(response.json()), response.status_code
+        except:
+            return jsonify({"message": "Album updated successfully"}), response.status_code
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -244,7 +259,12 @@ def delete_individual_album(album_id):
     try:
         url = ENDPOINTS['album-DIA'].replace("{id}", str(album_id))
         response = requests.delete(url)
-        return jsonify(response.json()), response.status_code
+        
+        # Handle possible empty responses
+        try:
+            return jsonify(response.json()), response.status_code
+        except:
+            return jsonify({"message": "Album deleted successfully"}), response.status_code
     
     except Exception as e:
         # Handle exceptions
@@ -358,7 +378,12 @@ def update_individual_track(album_id, track_id):
 
         url = ENDPOINTS['track-UIT'].replace("{album_id}", str(album_id)).replace("{track_id}", str(track_id))
         response = requests.put(url, json=data)
-        return jsonify(response.json()), response.status_code
+
+        # Handle possible empty responses
+        try:
+            return jsonify(response.json()), response.status_code
+        except:
+            return jsonify({"message": "Track updated successfully"}), response.status_code
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -369,7 +394,12 @@ def delete_individual_track(album_id, track_id):
     try:
         url = ENDPOINTS['track-DIT'].replace("{album_id}", str(album_id)).replace("{track_id}", str(track_id))
         response = requests.delete(url)
-        return jsonify(response.json()), response.status_code
+
+        # Handle possible empty responses
+        try:
+            return jsonify(response.json()), response.status_code
+        except:
+            return jsonify({"message": "Track deleted successfully"}), response.status_code
     
     except Exception as e:
         # Handle exceptions
