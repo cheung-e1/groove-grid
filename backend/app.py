@@ -51,11 +51,58 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# ***** INDEX ROUTE *****
+# ***** FRONTEND ROUTES *****
+
+# Index
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Users
+@app.route('/users')
+def users_page():
+    try:
+        response = requests.get(ENDPOINTS['user-RAU'])
+        users = response.json()  # Fetch all users
+        return render_template('users.html', users=users)
+    except Exception as e:
+        return render_template('error.html', message=str(e))
+    
+# Single User
+@app.route('/users/<int:user_id>')
+def user_details(user_id):
+    try:
+        response = requests.get(ENDPOINTS['user-RIU'].replace("{id}", str(user_id)))
+        user = response.json()  # Fetch single user
+        return render_template('user_details.html', user=user)
+    except Exception as e:
+        return render_template('error.html', message=str(e))
+
+# Albums
+@app.route('/albums')
+def albums_page():
+    try:
+        response = requests.get(ENDPOINTS['album-RAA'])
+        albums = response.json()
+        return render_template('albums.html', albums=albums)
+    except Exception as e:
+        return render_template('error.html', message=str(e))
+    
+# Single Album
+@app.route('/albums/<int:album_id>')
+def album_details(album_id):
+    try:
+        response = requests.get(ENDPOINTS['album-RIA'].replace("{id}", str(album_id)))
+        album = response.json()  # Fetch album details
+        return render_template('album_details.html', album=album)
+    except Exception as e:
+        return render_template('error.html', message=str(e))
+
+
+
+
+
+# ***** BACKEND ROUTES *****
 
 # ***** USER ROUTES *****
 

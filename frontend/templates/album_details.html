@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ album.name }} Details</title>
+    <style>
+        .album-image {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Album: {{ album.name }}</h1>
+    <img src="{{ album.image_url}}" alt="Album Cover" class="album-image">
+    <p><strong>Artist:</strong> {{ album.artist_name }}</p>
+    <p><strong>Format:</strong> {{ album.format_type }}</p>
+    <p><strong>Release Date:</strong> {{ album.release_date }}</p>
+    <p><strong>Genre:</strong> {{ album.genre }}</p>
+    <p><strong>Description:</strong> {{ album.description }}</p>
+    <p><strong>User ID:</strong> {{ album.user_id }}</p>
+
+    <a href="/albums/{{ album.id }}/update">Update</a>
+    <a href="/albums/{{ album.id }}/delete" onclick="return confirm('Are you sure you want to delete this album?');">Delete</a>
+    <br><br>
+    <a href="/albums/{{ album.id }}/tracks">View tracks</a>
+    <br><br>
+    <a href="/albums">Back to Albums</a>
+</body>
+</html>
