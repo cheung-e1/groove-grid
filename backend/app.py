@@ -50,6 +50,10 @@ ALLOWED_EXTENSIONS = {
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# Azure Translator settings
+TRANSLATOR_ENDPOINT = "https://api.cognitive.microsofttranslator.com/translate"
+TRANSLATOR_KEY = "EiVDiiymCG4nNbDjejOiLTWTHbPg1xuh8J9KUupHMzCMimppkqPeJQQJ99ALACmepeSXJ3w3AAAbACOGrwWX"
+TRANSLATOR_REGION = "uksouth"
 
 # ***** FRONTEND ROUTES *****
 
@@ -498,6 +502,43 @@ def upload_track_audio(album_id, track_id):
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+# ***** Translate Text Route *****
+@app.route('/translate', methods=['POST'])
+def translate_text():
+    try:
+        # Extract text and target language from the request body
+        data = request.get_json()
+        text = data.get("text")
+        target_language = data.get("to", "en")  # Default to English if not provided
+
+        # Ensure text is provided
+        if not text:
+            return jsonify({"error": "Text is required"}), 400
+
+        # Set headers and body for the translation API
+        headers = {
+            "Ocp-Apim-Subscription-Key": TRANSLATOR_KEY,
+            "Ocp-Apim-Subscription-Region": TRANSLATOR_REGION,
+            "Content-Type": "application/json"
+        }
+        body = [{"text": text}]
+        params = {"api-version": "3.0", "to": target_language}
+
+        # Make a POST request to the Azure Translator API
+        response = requests.post(TRANSLATOR_ENDPOINT, headers=headers, params=params, json=body)
+
+        # Check response status and parse the result
+        if response.status_code == 200:
+            translation = response.json()[0]["translations"][0]["text"]
+            return jsonify({"translated_text": translation}), 200
+        else:
+            return jsonify({"error": response.text}), response.status_code
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
