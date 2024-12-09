@@ -18,7 +18,9 @@
     <p><strong>Format:</strong> {{ album.format_type }}</p>
     <p><strong>Release Date:</strong> {{ album.release_date }}</p>
     <p><strong>Genre:</strong> {{ album.genre }}</p>
-    <p><strong>Description:</strong> {{ album.description }}</p>
+    <p id="description"><strong>Description:</strong> {{ album.description }}</p>
+    <button id="translate-btn">Translate Description</button>
+    <p id="translated-description"></p>
     <p><strong>User ID:</strong> {{ album.user_id }}</p>
 
     <a href="/albums/{{ album.album_id }}/update">Update</a>
@@ -27,5 +29,7 @@
     <a href="/albums/{{ album.album_id }}/tracks">View tracks</a>
     <br><br>
     <a href="/albums">Back to Albums</a>
+
+    <script src="../static/js/translate.js"></script>
 </body>
 </html>
