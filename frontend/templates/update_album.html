@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Album</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Album</h1>
+    <form action="/api/albums/{{ album.album_id }}" method="POST">
+        <input type="hidden" name="_method" value="PUT">
+
+        <label for="name">Album Name</label>
+        <input type="text" id="name" name="name" value="{{ album.name }}" required>
+
+        <label for="format_type">Format Type</label>
+        <select id="format_type" name="format_type">
+            <option value="Vinyl" {% if album.format_type == 'Vinyl' %}selected{% endif %}>Vinyl</option>
+            <option value="CD" {% if album.format_type == 'CD' %}selected{% endif %}>CD</option>
+            <option value="Cassette" {% if album.format_type == 'Cassette' %}selected{% endif %}>Cassette</option>
+        </select>
+
+        <label for="release_date">Release Date</label>
+        <input type="date" id="release_date" name="release_date" value="{{ album.release_date }}" required>
+
+        <label for="genre">Genre</label>
+        <input type="text" id="genre" name="genre" value="{{ album.genre }}" required>
+
+        <label for="artist_name">Artist Name</label>
+        <input type="text" id="artist_name" name="artist_name" value="{{ album.artist_name }}" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4">{{ album.description }}</textarea>
+
+        <label for="user_id">User ID</label>
+        <input type="number" id="user_id" name="user_id" value="{{ album.user_id }}" required>
+
+        <button type="submit">Update Album</button>
+    </form>
+
+    <br>
+    <a href="/albums/{{ album.album_id }}">Back to Album Details</a>
+</body>
+</html>

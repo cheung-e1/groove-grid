@@ -97,9 +97,21 @@ def album_details(album_id):
         return render_template('album_details.html', album=album)
     except Exception as e:
         return render_template('error.html', message=str(e))
-
-
-
+    
+# Update Album
+@app.route('/albums/<int:album_id>/update', methods=['GET'])
+def update_album(album_id):
+    try:
+        # Fetch the album details using your existing logic
+        response = requests.get(ENDPOINTS['album-RIA'].replace("{id}", str(album_id)))
+        if response.status_code == 200:
+            album = response.json()
+            # Render the update_album.html template with album data
+            return render_template('update_album.html', album=album)
+        else:
+            return jsonify({"error": "Album not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 # ***** BACKEND ROUTES *****

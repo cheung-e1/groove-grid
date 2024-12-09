@@ -21,10 +21,10 @@
     <p><strong>Description:</strong> {{ album.description }}</p>
     <p><strong>User ID:</strong> {{ album.user_id }}</p>
 
-    <a href="/albums/{{ album.id }}/update">Update</a>
-    <a href="/albums/{{ album.id }}/delete" onclick="return confirm('Are you sure you want to delete this album?');">Delete</a>
+    <a href="/albums/{{ album.album_id }}/update">Update</a>
+    <a href="/albums/{{ album.album_id }}/delete" onclick="return confirm('Are you sure you want to delete this album?');">Delete</a>
     <br><br>
-    <a href="/albums/{{ album.id }}/tracks">View tracks</a>
+    <a href="/albums/{{ album.album_id }}/tracks">View tracks</a>
     <br><br>
     <a href="/albums">Back to Albums</a>
 </body>
